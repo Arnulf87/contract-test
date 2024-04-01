@@ -1,0 +1,22 @@
+{
+  "name": "contract-test",
+  "version": "1.0.0",
+  "description": "TEST",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Arnulf87/contract-test.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Arnulf87/contract-test/issues"
+  },
+  "homepage": "https://github.com/Arnulf87/contract-test#readme",
+  "devDependencies": {
+    "hardhat": "^2.22.2"
+  }
+}
