@@ -14,7 +14,8 @@ contract MyTestToken {
     // Symbol of the token.
     string private _symbol = "MTT";
 
-    uint8 private _decemals = 2;
+    // the number of decimals
+    uint8 private _decemals = 18;
     
     // Total amount of tokens in existence.
     uint256 private _totalSupply;
@@ -36,7 +37,7 @@ contract MyTestToken {
     event Approval(address indexed _owner, address indexed _spender, uint256 _value);
 
     constructor () {
-        uint256 _supply = 21000 * 10**_decemals;
+        uint256 _supply = 21000 ether;
         
         _balances[msg.sender] = _supply;
         _totalSupply = _supply;
@@ -90,7 +91,7 @@ contract MyTestToken {
      * 
      * Requirements:
      * - The amount of token of the sender
-     * - Address `to` is not equal to `address(0)`
+     * - Address `to` is not equal to `ZeroAddress`
      *
      * @param _to     address where tokens will be transfer.
      *
@@ -118,6 +119,9 @@ contract MyTestToken {
      *
      * Requirements:
      * - is the address `_from` allowed to moved `_value` to the address `_to`
+     * - is the balance `_from` greater than or equal to `_value`
+     * - is the balance `_from` not equal zero
+     * - Address `to` is not equal to `ZeroAddress`
      *
      * @param _from   address from which the tokens will be moved.
      *
@@ -127,7 +131,10 @@ contract MyTestToken {
      */
     function transferFrom(address _from, address _to, uint256 _value) public returns (bool) {
         require(_allowances[_from][msg.sender] >= _value, "You are not allowed to spend this amount of tokens!");
-        
+        require(_balances[_from] >= _value, "Not enough funds!");
+        require(_balances[_from] != 0, "Not enough funds!");
+        require(_to != address(0), "Wrong addres!");
+
         _balances[_from] -= _value;
         _balances[_to] += _value;
         _allowances[_from][msg.sender] -= _value;
@@ -142,11 +149,20 @@ contract MyTestToken {
      *
      * Returns a boolean value indicating whether the operation succeeded.
      *
+     * Emits a {Approval} event.
+     * 
+     * Requirements:
+     * - Address `_spender` is not equal to `ZeroAddress`
+     * - is the balance `msg.sender` not equal zero
+     * 
      * @param _spender the address of someone who is a `spender`.
      *
      * @param _value amount of tokens that are approved.
      */
     function approve(address _spender, uint256 _value) public returns (bool) {
+        require(_spender != address(0), "Wrong addres!");
+        require(_balances[msg.sender] != 0, "Not enough funds");
+
         _allowances[msg.sender][_spender] = _value;
         
         emit Approval(msg.sender, _spender, _value);
