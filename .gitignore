@@ -5,6 +5,8 @@ node_modules/
 # Hardhat files
 /cache
 /artifacts
+Lock.ts
+
 
 # TypeChain files
 /typechain
